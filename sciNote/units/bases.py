@@ -9,7 +9,7 @@ PreName = 'the_unit_'
 class BaseUnit():
     pass
 class Unit(BaseUnit):
-    _ratio=1.0
+    _ratio=1e0
     @classmethod
     def get_ratio(cls):
         return cls._ratio

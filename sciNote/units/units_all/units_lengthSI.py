@@ -5,7 +5,7 @@ from .bases import Unit
 
 __all__=(Meter, Kilometer, )
 class Meter(Unit):
-    _ratio = 1.0
+    _ratio = 1e0
 m=Meter
 
 class Kilometer(Unit):

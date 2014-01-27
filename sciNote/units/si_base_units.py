@@ -3,13 +3,15 @@
 # by スノル
 
 from .bases import (ta, HasUnit, Undefined)
-import .units_lengthSI as lengthSI
-import .units_length as lengthAll
+
+from .units_all import units_lengthSI as SIUnitLength
+from .units_all import units_length as UnitLength
+
 class BaseLength(HasUnit):
     '''The base class of length'''
-    _default_unit = lengthSI.Meter
-    _unit_list = lengthSI.__all__
+    _default_unit = SIUnitLength.Meter
+    _unit_list = SIUnitLength.__all__
     unit = _default_unit
 
 class Length(BaseLength):
-    _unit_list = lengthAll.__all__
+    _unit_list = UnitLength.__all__
