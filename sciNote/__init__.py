@@ -1,3 +1,4 @@
 
-VERSION = (0, 0, 1, 'developing', 0)
-__all__ = ['unit']
+__version__ = '0, 0, 1'
+
+__all__ = ['units']
