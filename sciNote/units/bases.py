@@ -3,64 +3,62 @@
 # by スノル
 
 import traits.api as ta
-
-PreName = 'the_unit_'
-
+from .util import NOW_UNITS, newUnit
+from .locals import *
+#PreName = 'the_unit_'
 class BaseUnit():
-    pass
+    ratio=1e0
 class Unit(BaseUnit):
-    _ratio=1e0
-    @classmethod
-    def get_ratio(cls):
-        return cls._ratio
+    def __init__(self, ratio=1e0, unittype=None):
+        self.ratio = ratio
+        if unittype is None:
+            self.unittype = (0,)*7
+        else:
+            self.unittype = unittype
+
+NOW_UNITS = {}
+def newUnit(unit):
+    NOW_UNITS[unit.unittype+(ratio,)] = unit
+
+def askUnit(unittype):
+    if NOW_UNITS.has_key(unittype):
+        return NOW_UNITS[unittype)
+    return None
+
 class Any(Unit):
-    pass
+    def __init__(self):
+        Unit.__init__(self)
+_any = Any()
+newUnit(_any)
 
-class BaseHasUnit(ta.Float):
-    '''The base of all HasUnit classes.
-    '''
-    _default_unit = Any
-    _unit_list = [Any]
-    unit = _default_unit
-
-    def set_value_withunit(self, object, name, value):
-        myunit = self._unit_list.get(value[1], ta.Undefined)
-        if myunit is ta.Undefined:
-            self.error(object, name, value)
-        tmpv = self.convert(value[0], value[1], self._default_unit)
-        self.unit = myunit
-
-    def set_value_nounit(self, object, name, value):
-        object.__dict__[PreName + name] = value
-
-    def convert(self, value, unit_before, unit_after):
-        if unit_before == unit_after:
+class ValueUnit(float):
+    def __init__(self, value, unit = _any):
+        float.__init__(self, value)
+        self.unit = unit
+        
+    @staticmethod
+    def convert(value, unit_before, unit_after):
+        if unit_before is unit_after:
             return value
-        return value * unit_after.get_ratio() / unit_before.get_ratio()
+        return value * unit_after.ratio() / unit_before.ratio()
 
-    def get_value(self, object, name, unitName):
-        tmpv = object.__dict__.get(PreName + name, ta.Undefined)
-        if unitName is not self.unit:
-            tmpv = self.convert(tmpv, self.unit, unitName)
-        return tmpv
+    def __abs__(self):
+        return ValueUnit(float.__abs__(self), self.unit)
+        
+    def __add__(self, other):
+        if self.unit.unittype != self.other.unittype:
+            raise Exception('Different Type of Data')
+        self
+        return ValueUnit(float.__add__(self, other), self.unit)
+        
+    def __div__(self, other):
+        if self.unit.unittype != self.other.unittype:
+            raise Exception('Different Type of Data')
+        return ValueUnit(float.__div__(self, other))
+        
+    def __divmod__(self, other):
+        if self.unit.unittype != self.other.unittype:
+            raise Exception('Different Type of Data')
 
-    def get_default_unit(self):
-        return self._default_unit
-
-    def get_unit_list(self):
-        return self._unit_list
-
-class HasUnit(BaseHasUnit):
-    '''A normal base of HasUnit classes.
-    '''
-    _set_value = {tuple: BaseHasUnit.set_value_withunit,
-        list: BaseHasUnit.set_value_withunit}
-
-    def get(self, object, name):
-        return self.get_value(object, name, self.unit)
-
-    def set(self, object, name, value):
-        self.set_value.get(type(value),
-            BaseHasUnit.set_value_nounit)\
-            (self, object, name, value)
+        return ValueUnit(float.__add__(self, other))
 

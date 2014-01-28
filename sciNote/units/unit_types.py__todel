@@ -1,0 +1,68 @@
+# -*- coding:utf-8 -*-
+# filename: sciNote/units/unit_types.py
+# by スノル
+from .bases import Unit
+__all__ = ('Unit', 'UnitYotta', 'UnitZetta', 'UnitExa', 'UnitPeta', 'UnitTera', 'UnitGiga', 'UnitMega',
+'UnitKilo', 'UnitHecto', 'UnitDeca', 'UnitDeci', 'UnitCenti', 'UnitMilli', 'UnitMicro', 'UnitNano',
+'UnitPico', 'UnitFemto', 'UnitAtto', 'UnitZepto', 'UnitYocto')
+{'Y':{'symbol':'Y','ratio'=1e24,'name':'Yotta'}}
+class UnitYotta(Unit):
+    symbol = 'Y'
+    ratio = 1e24
+class UnitZetta(Unit):
+    symbol = 'Z'
+    ratio = 1e21
+class UnitExa(Unit):
+    symbol = 'E'
+    ratio =  1e18
+class UnitPeta(Unit):
+    symbol = 'P'
+    ratio = 1e15
+class UnitTera(Unit):
+    symbol = 'T'
+    ratio = 1e12
+class UnitGiga(Unit):
+    symbol = 'G'
+    ratio = 1e9
+class UnitMega(Unit):
+    symbol = 'M'
+    ratio = 1e6
+class UnitKilo(Unit):
+    symbol = 'k'
+    ratio = 1e3
+class UnitHecto(Unit):
+    symbol = 'h'
+    ratio = 1e2
+class UnitDeca(Unit):
+    symbol = 'da'
+    ratio = 1e1
+class UnitDeci(Unit):
+    symbol = 'd'
+    ratio = 1e-1
+class UnitCenti(Unit):
+    symbol = 'c'
+    ratio = 1e-2
+class UnitMilli(Unit):
+    symbol = 'm'
+    ratio = 1e-3
+class UnitMicro(Unit):
+    symbol = 'µ'
+    ratio = 1e-6 
+class UnitNano(Unit):
+    symbol = 'n'
+    ratio = 1e-9
+class UnitPico(Unit):
+    symbol = 'p'
+    ratio = 1e-12
+class UnitFemto(Unit):
+    symbol = 'f'
+    ratio = 1e-15
+class UnitAtto(Unit):
+    symbol = 'a'
+    ratio = 1e-18
+class UnitZepto(Unit):
+    symbol = 'z'
+    ratio = 1e-21
+class UnitYocto(Unit):
+    symbol = 'y'
+    ratio = 1e-24

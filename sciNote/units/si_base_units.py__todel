@@ -1,0 +1,18 @@
+# -*- coding:utf-8 -*-
+# filename: sciNote/units/si_base_units.py
+# by スノル
+
+from .bases import (ta, HasUnit)
+
+from .units_lengthSI import Meter, UNITS as ulUSI
+from .units_length import UNITS as ulU
+
+class BaseLength(HasUnit):
+    '''The base class of length'''
+    _default_unit = Meter
+    _unit_set = ulUSI
+    unit = _default_unit
+
+class Length(BaseLength):
+    _unit_set = ulU
+

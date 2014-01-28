@@ -6,5 +6,6 @@ from .bases import (BaseHasUnit, HasUnit)
 from .si_base_units import (BaseLength, Length,
     )
 
-from .units_all import units_lengthSI as SIUnitLength
-from .units_all import units_length as UnitLength
+import units_lengthSI as SIUnitLength
+import units_length as UnitLength
+
