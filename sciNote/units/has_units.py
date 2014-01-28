@@ -2,6 +2,11 @@
 # filename: sciNote/units/has_units.py
 # by スノル
 
+import traits.api as ta
+from .locals import *
+
+PRENAME = '_unit_'
+
 class BaseHasUnit(TraitType):
     '''The base of all HasUnit classes.
     '''
