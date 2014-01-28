@@ -1,3 +1,6 @@
+# -*- coding:utf-8 -*-
+# filename: sciNote/units/has_units.py
+# by スノル
 
 class BaseHasUnit(TraitType):
     '''The base of all HasUnit classes.

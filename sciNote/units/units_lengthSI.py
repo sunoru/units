@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-# filename: sciNote/units/units_all/units_lengthSI.py
+# filename: sciNote/units/units_lengthSI.py
 # by スノル
 from .unit_types import *
 

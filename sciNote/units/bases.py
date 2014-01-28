@@ -3,10 +3,10 @@
 # by スノル
 
 import traits.api as ta
-from .util import NOW_UNITS, newUnit
 from .data import *
 from .locals import *
-#PreName = 'the_unit_'
+
+PRENAME = '_unit_'
 class BaseUnit():
     ratio=1e0
 class Unit(BaseUnit):
