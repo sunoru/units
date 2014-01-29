@@ -152,7 +152,7 @@ class Unit(BaseUnit):
         re = self.copy()
         other = int(other)
         for e1 in re.data.keys():
-            re.data[e1] = (re.data[e1][0] * other, other.data[e1][1])
+            re.data[e1] = (re.data[e1][0] * other, re.data[e1][1])
         return re
 
     def __div__(self, other):

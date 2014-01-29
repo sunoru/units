@@ -5,6 +5,8 @@ from sciNote.units import api as sua
 
 from traits import api as ta
 
+V = sua.Vu
+
 class Cs(ta.HasTraits):
     xsk = ta.Float
     xsk2 = sua.HasUnit
