@@ -3,9 +3,8 @@
 # by スノル
 
 from sys import stdout
-from .unit_error import UnmatchedUnits
-from .bases import Unit
-from .utils import genUnit
+from .unit_error import UnmatchedUnits, ComplexError, ValueInitError
+from .bases import Unit, genUnit
 
 class ValueUnit(complex):
     def __new__(cls, value=0.0 + 0.0j, unit=None):
@@ -91,22 +90,22 @@ class ValueUnit(complex):
 
     def __gt__(self, other):
         if self.imag !=0 or other.imag != 0:
-            raise ComplexOrderE()
+            raise ComplexError()
         return self.real > (complex.__mul__(other, self.unit.convert(other.unit))).real
     
     def __ge__(self, other):
         if self.imag !=0 or other.imag != 0:
-            raise ComplexOrderE()
+            raise ComplexError()
         return self.real >= (complex.__mul__(other, self.unit.convert(other.unit))).real
 
     def __lt__(self, other):
         if self.imag !=0 or other.imag != 0:
-            raise ComplexOrderE()
+            raise ComplexError()
         return self.real < (complex.__mul__(other, self.unit.convert(other.unit))).real
 
     def __le__(self, other):
         if self.imag !=0 or other.imag != 0:
-            raise ComplexOrderE()
+            raise ComplexError()
         return self.real <= (complex.__mul__(other, self.unit.convert(other.unit))).real
     
 
@@ -141,3 +140,18 @@ class ValueUnit(complex):
                 out.write('(%e+%ej) %s\n' % (self.real, self.imag, unicode(self.unit)))
         else:
             out.write(unicode(self))
+
+def genValue(*value):
+    if len(value)>=2:
+        t = genUnit(value[1])
+        return ValueUnit(value[0], t)
+    value = value[0]
+    if isinstance(value, complex) or isinstance(value, float) or isinstance(value, int):
+        return ValueUnit(value)
+    if isinstance(value, basestring):
+        for i1 in xrange(0, len(value)):
+            if value[i1].isalpha():
+                break
+        return ValueUnit(value[:i1], genUnit(value[i1:]))
+    raise ValueInitError()
+

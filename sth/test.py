@@ -2,10 +2,9 @@
 # filename: sth/test.py
 # by スノル
 from sciNote.units import api as sua
+from sciNote.units.api import V
 
 from traits import api as ta
-
-V = sua.Vu
 
 class Cs(ta.HasTraits):
     xsk = ta.Float

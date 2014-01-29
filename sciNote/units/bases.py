@@ -180,3 +180,9 @@ class Unit(BaseUnit):
                     re.data[it[i1][0]] = (tmp, re.data[it[i1][0]][1])
         return (re, self.convert(other))
 
+def genUnit(name):
+    if name is None:
+        return Unit()
+    u1, u2 = Unit.analysis(name)
+    re = {i1:(u1[i1], u2[i1]) for i1 in xrange(0, len(u2)) if u1[i1]!=0}
+    return Unit(re)

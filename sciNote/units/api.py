@@ -4,9 +4,7 @@
 
 from locals import *
 from .has_unit import (BaseHasUnit, HasUnit)
-from .bases import Unit
-from .value_type import ValueUnit
-from .utils import genUnit
+from .bases import (Unit, genUnit)
+from .value_type import (ValueUnit, genValue)
 
-Vu = ValueUnit
-
+V = genValue

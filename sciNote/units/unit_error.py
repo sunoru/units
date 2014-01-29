@@ -13,5 +13,8 @@ class IlligalUnit(BaseError):
 class UnmatchedUnits(BaseError):
     _mes = 'Unmatched Units!'
 
-class ComplexOrderE(BaseError):
-    _mes = 'No ordering relation is defined for complex numbers'
+class ComplexError(BaseError):
+    _mes = 'Complex Error!'
+
+class ValueInitError(BaseError):
+    _mes = 'Value Initializing Error!'
