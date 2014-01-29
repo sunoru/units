@@ -24,20 +24,8 @@ class BaseUnit():
             self.unitname = tuple(unitname)
 
 class Unit(BaseUnit):
-    def __init__(self, unittype=None, unitname=None):
-        BaseUnit.__init__(self, unittype, unitname)
-
-    def __repr__(self):
-        re = ''
-        for e1 in xrange(0, len(self.unittype)):
-            if self.unittype[e1] == 0:
-                continue
-            elif self.unittype[e1] == 1:
-                re += '*' + self.unitname[e1]
-            else:
-                re += '*' + self.unitname[e1] + '^' + str(self.unittype[e1])
-        return re[1:]
-
+    '''Unit class.
+    '''
     @staticmethod
     def findUnit(ccflg, tmstr, punit, censu, annit):
         ttflg = False
@@ -103,18 +91,23 @@ class Unit(BaseUnit):
         u1, u2 = Unit.analysis(name)
         return Unit(u1, u2)
 
-NOW_UNITS = {}
-def newUnit(unit):
-    NOW_UNITS[unit.unittype + unit.unitname] = unit
+    def __init__(self, unittype=None, unitname=None):
+        BaseUnit.__init__(self, unittype, unitname)
 
-def askUnit(unittype):
-    if NOW_UNITS.has_key(unittype):
-        return NOW_UNITS[unittype]
-    return None
+    def __repr__(self):
+        re = ''
+        for e1 in xrange(0, len(self.unittype)):
+            if self.unittype[e1] == 0:
+                continue
+            elif self.unittype[e1] == 1:
+                re += '*' + self.unitname[e1]
+            else:
+                re += '*' + self.unitname[e1] + '^' + str(self.unittype[e1])
+        return re[1:]
 
-newUnit(Unit())
-for _e1 in UNIT_DATA.values():
-    newUnit(Unit.genUnit(_e1['default']))
+    def __add__(self, other):
+        if self.unittype != 
+
 
 class ValueUnit(float):
     def __init__(self, value, unit):
