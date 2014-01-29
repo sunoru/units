@@ -1,3 +1,6 @@
+# -*- coding:utf-8 -*-
+# filename: sciNote/units/value_type.py
+# by スノル
 
 from .unit_error import UnmatchedUnits
 from .bases import Unit
@@ -10,7 +13,7 @@ class ValueUnit(complex):
             obj.unit = Unit()
         else:
             obj.unit = unit
-        if isinstance(obj.unit, str):
+        if isinstance(obj.unit, basestring):
             obj.unit = genUnit(obj.unit)
         return obj
     
@@ -19,7 +22,7 @@ class ValueUnit(complex):
 
     def __eq__(self, other):
         return complex.__eq__(self,
-            complex.__mul__(other, self.unit.convert(other.unit)[1]))
+            complex.__mul__(other, self.unit.convert(other.unit)))
 
     def __abs__(self):
         return ValueUnit(complex.__abs__(self), self.unit)
@@ -86,23 +89,29 @@ class ValueUnit(complex):
         return ValueUnit(complex.__rpow__(self, other), Unit())
 
     def __gt__(self, other):
-        return complex.__gt__(self,
-            complex.__mul__(other, self.unit.convert(other.unit)[1]))
+        if self.imag !=0 or other.imag != 0:
+            raise ComplexOrderE()
+        return self.real > (complex.__mul__(other, self.unit.convert(other.unit))).real
     
     def __ge__(self, other):
-        return complex.__ge__(self,
-            complex.__mul__(other, self.unit.convert(other.unit)[1]))
+        if self.imag !=0 or other.imag != 0:
+            raise ComplexOrderE()
+        return self.real >= (complex.__mul__(other, self.unit.convert(other.unit))).real
 
     def __lt__(self, other):
-        return complex.__lt__(self,
-            complex.__mul__(other, self.unit.convert(other.unit)[1]))
+        if self.imag !=0 or other.imag != 0:
+            raise ComplexOrderE()
+        return self.real < (complex.__mul__(other, self.unit.convert(other.unit))).real
 
     def __le__(self, other):
-        return complex.__le__(self,
-            complex.__mul__(other, self.unit.convert(other.unit)[1]))
+        if self.imag !=0 or other.imag != 0:
+            raise ComplexOrderE()
+        return self.real <= (complex.__mul__(other, self.unit.convert(other.unit))).real
     
 
     def convert(self, unit_after):
+        if isinstance(unit_after, basestring):
+            unit_after = genUnit(unit_after)
         ra = unit_after.convert(self.unit)
         return ValueUnit(complex.__mul__(self, ra), unit_after.copy())
 
@@ -110,8 +119,20 @@ class ValueUnit(complex):
         ra = self.unit.normalize()
         return ValueUnit(complex.__mul__(self, ra[1]), ra[0])
 
-    def __repr__(self):
+    def __unicode__(self):
         if self.isreal():
-            return str(self.real) + ' ' + str(self.unit)
-        return '(' + str(self.real) + '+' + str(self.imag) + 'j) ' + str(self.unit)
+            return '%s ' % self.real + unicode(self.unit)
+        return u'(%s+%sj) ' % (self.real ,self.imag) + unicode(self.unit)
+
+    def __str__(self):
+        if self.isreal():
+            return '%s %s' % (self.real, self.unit)
+        return '(%s+%sj) %s' % (self.real, self.imag ,self.unit)
+
+    def __repr__(self):
+        return str(self)
+
+    def printme(self, method='sci'):
+        if self.isreal():
+            return '%e %s' % (self.real, unicode(self.unit))
 

@@ -1,3 +1,6 @@
+# -*- coding:utf-8 -*-
+# filename: sciNote/units/unit_error.py
+# by スノル
 
 class BaseError(Exception):
     _mes = 'Unknown Error.'
@@ -9,3 +12,6 @@ class IlligalUnit(BaseError):
 
 class UnmatchedUnits(BaseError):
     _mes = 'Unmatched Units!'
+
+class ComplexOrderE(BaseError):
+    _mes = 'No ordering relation is defined for complex numbers'

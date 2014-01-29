@@ -1,3 +1,6 @@
+# -*- coding:utf-8 -*-
+# filename: sciNote/units/utils.py
+# by スノル
 
 from .bases import Unit
 

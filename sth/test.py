@@ -15,3 +15,7 @@ class Cs(ta.HasTraits):
         pass
 
 x=Cs()
+v1 = V('123', 'm/s')
+v2 = V('120', u'µm/s')
+#y = str(v2)
+t = V('43.2', 's')

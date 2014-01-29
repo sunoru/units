@@ -81,14 +81,25 @@ class Unit(BaseUnit):
     def __init__(self, data=None):
         BaseUnit.__init__(self, data)
 
-    def __repr__(self):
-        re = ''
-        for e1 in  self.data.values():
+    def __unicode__(self):
+        re = u''
+        for e1 in self.data.values():
             if e1[0] == 1:
                 re += '*' + e1[1]
             else:
                 re += '*' + e1[1] + '^' + str(e1[0])
         return re[1:]
+
+    def __str__(self):
+        tmp = unicode(self)
+        try:
+            tmp = str(tmp)
+        except:
+            tmp = '<unable to show units>'
+        return tmp
+
+    def __repr__(self):
+        return str(self)
 
     def copy(self):
         return Unit(self.data)
@@ -107,8 +118,8 @@ class Unit(BaseUnit):
         ra = 1e0
         for e1 in other.data.keys():
             if self.data.has_key(e1):
-                ra *= (UNIT_DATA[e1][self.data[e1][1]] /
-                    UNIT_DATA[e1][other.data[e1][1]]) ** other.data[e1][0]
+                ra *= (UNIT_DATA[e1][other.data[e1][1]] /
+                    UNIT_DATA[e1][self.data[e1][1]]) ** other.data[e1][0]
         return ra
 
     def __eq__(self, other):

@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-# filename: sciNote/units/has_units.py
+# filename: sciNote/units/has_unit.py
 # by スノル
 
 import traits.api as ta
@@ -17,8 +17,7 @@ class BaseHasUnit(ta.TraitType):
 
     def __init__(self, unit=''):
         ta.TraitType.__init__(self)
-        self.unit = genUnit(unit)
-        self.unit.normalize()
+        self.unit = genUnit(unit).normalize()[0]
 
     def create_editor(self):
         pass
