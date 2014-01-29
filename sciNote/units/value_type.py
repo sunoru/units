@@ -2,6 +2,7 @@
 # filename: sciNote/units/value_type.py
 # by スノル
 
+from sys import stdout
 from .unit_error import UnmatchedUnits
 from .bases import Unit
 from .utils import genUnit
@@ -121,8 +122,8 @@ class ValueUnit(complex):
 
     def __unicode__(self):
         if self.isreal():
-            return '%s ' % self.real + unicode(self.unit)
-        return u'(%s+%sj) ' % (self.real ,self.imag) + unicode(self.unit)
+            return '%s %s' % (self.real, unicode(self.unit))
+        return u'(%s+%sj) %s ' % (self.real ,self.imag, unicode(self.unit))
 
     def __str__(self):
         if self.isreal():
@@ -132,7 +133,11 @@ class ValueUnit(complex):
     def __repr__(self):
         return str(self)
 
-    def printme(self, method='sci'):
-        if self.isreal():
-            return '%e %s' % (self.real, unicode(self.unit))
-
+    def printme(self, out=stdout, method='sci'):
+        if method == 'sci':
+            if self.isreal():
+                out.write('%e %s\n' % (self.real, unicode(self.unit)))
+            else:
+                out.write('(%e+%ej) %s\n' % (self.real, self.imag, unicode(self.unit)))
+        else:
+            out.write(unicode(self))

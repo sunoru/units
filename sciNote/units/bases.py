@@ -85,9 +85,9 @@ class Unit(BaseUnit):
         re = u''
         for e1 in self.data.values():
             if e1[0] == 1:
-                re += '*' + e1[1]
+                re += '*%s' % e1[1]
             else:
-                re += '*' + e1[1] + '^' + str(e1[0])
+                re += '*%s^%s' % (e1[1], str(e1[0]))
         return re[1:]
 
     def __str__(self):
