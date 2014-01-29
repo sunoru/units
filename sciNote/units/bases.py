@@ -36,11 +36,13 @@ class Unit(BaseUnit):
     @staticmethod
     def analysis(name):
         mystr = name.replace(' ', '')
+        punit = [0] * 7
+        annit = [''] * 7
+        if len(mystr) == 0:
+            return punit, annit
         tmstr = ''
         ccflg = True
         censu = 1
-        punit = [0] * 7
-        annit = [''] * 7
         miflg = False
         for i in xrange(0, len(mystr)):
             if mystr[i] == '^':
@@ -93,10 +95,11 @@ class Unit(BaseUnit):
 
     def normalize(self):
         ratio = 1e0
-        for e1, e2 in self.data.items():
+        re = self.copy()
+        for e1, e2 in re.data.items():
             ratio *= UNIT_DATA[e1][e2[1]] ** e2[0]
-            self.data[e1] = (e2[0], UNIT_DATA[e1]['default'])
-        return ratio
+            re.data[e1] = (e2[0], UNIT_DATA[e1]['default'])
+        return re, ratio
 
     def convert(self, other):
         '''Convert other to the same as self.
@@ -107,7 +110,6 @@ class Unit(BaseUnit):
                 ra *= (UNIT_DATA[e1][self.data[e1][1]] /
                     UNIT_DATA[e1][other.data[e1][1]]) ** other.data[e1][0]
         return ra
-
 
     def __eq__(self, other):
         p1 = self.data.keys()
@@ -146,6 +148,13 @@ class Unit(BaseUnit):
                     re.data[it[i1][0]] = (tmp, re.data[it[i1][0]][1])
         return (re, self.convert(other))
 
+    def __pow__(self, other):
+        re = self.copy()
+        other = int(other)
+        for e1 in re.data.keys():
+            re.data[e1] = (re.data[e1][0] * other, other.data[e1][1])
+        return re
+
     def __div__(self, other):
         it = other.data.items()
         re = self.copy()
@@ -159,44 +168,4 @@ class Unit(BaseUnit):
                 else:
                     re.data[it[i1][0]] = (tmp, re.data[it[i1][0]][1])
         return (re, self.convert(other))
-
-class ValueUnit(float):
-    def __init__(self, value=0.0, unit=None):
-        float.__init__(self, value)
-        if unit is None:
-            self.unit = Unit()
-        else:
-            self.unit = unit
-
-    def __abs__(self):
-        return ValueUnit(float.__abs__(self), self.unit)
-        
-    def __add__(self, other):
-        reunit = self.unit + other.unit
-        return ValueUnit(float.__add__(self, float.__mul__(other, reunit[1])), reunit[0])
-        
-    def __sub__(self, other):
-        reunit = self.unit - other.unit
-        return ValueUnit(float.__sub__(self, float.__mul__(other, reunit[1])), reunit[0])
-    
-    def __div__(self, other):
-        reunit = self.unit / other.unit
-        return ValueUnit(float.__div__(self, float.__mul__(other, reunit[1])), reunit[0])
-
-    def __mul__(self, other):
-        reunit = self.unit * other.unit
-        return ValueUnit(float.__mul__(self, float.__mul__(other, reunit[1])), reunit[0])
-        
-    def __divmod__(self, other):
-        if self.unit != other.unit:
-            raise UnmatchedUnits()
-        return ValueUnit(float.__divmod__(self, other), Unit())
-
-    def convert(self, unit_after):
-        ra = unit_after.convert(self.unit)
-        return ValueUnit(float.__mul__(self, ra), unit_after.copy())
-
-    def normalize(self):
-        ra = self.unit.normalize()
-        self = ValueUnit(float.__mul__(self, ra), self.unit)
 
