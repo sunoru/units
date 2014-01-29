@@ -11,7 +11,7 @@ class BaseUnit():
         if data is None:
             self.data = {}
         else:
-            self.data = data
+            self.data = data.copy()
 
 class Unit(BaseUnit):
     '''Unit class.
@@ -91,7 +91,7 @@ class Unit(BaseUnit):
             if e1[0] == 1:
                 re += '*' + e1[1]
             else:
-                re += '*' + e1[1] + '^' + e1[0]
+                re += '*' + e1[1] + '^' + str(e1[0])
         return re[1:]
 
     def copy(self):
@@ -100,15 +100,19 @@ class Unit(BaseUnit):
     def normalize(self):
         ratio = 1e0
         for e1, e2 in self.data.items():
-            ratio *= UNIT_DATA[e1][e2[1]]
+            ratio *= UNIT_DATA[e1][e2[1]] ** e2[0]
             self.data[e1] = (e2[0], UNIT_DATA[e1]['default'])
         return ratio
 
     def convert(self, other):
-        re = self.copy()
+        '''Convert other to the same as self.
+        '''
         ra = 1e0
-        for e1 in self.data.keys():
-            ra *= other.data.keys()
+        for e1 in other.data.keys():
+            if self.data.has_key(e1):
+                ra *= (UNIT_DATA[e1][self.data[e1][1]] /
+                    UNIT_DATA[e1][other.data[e1][1]]) ** other.data[e1][0]
+        return ra
 
 
     def __eq__(self, other):
@@ -127,12 +131,12 @@ class Unit(BaseUnit):
     def __add__(self, other):
         if self != other:
             raise UnmatchedUnits()
-        return self.copy()
+        return (self.copy(), self.convert(other))
 
     def __sub__(self, other):
         if self != other:
             raise UnmatchedUnits()
-        return self.copy()
+        return (self.copy(), self.convert(other))
 
     def __mul__(self, other):
         it = other.data.items()
@@ -140,53 +144,65 @@ class Unit(BaseUnit):
         for i1 in xrange(0, len(it)):
             if not re.data.has_key(it[i1][0]):
                 re.data[it[i1][0]] = it[i1][1]
-            tmp = re.data[it[i1][0]][0] + it[i1][1][0]
-            if tmp == 0:
-                del re.data[it[i1][0]]
-            else
-                re.data[it[i1][0]] = (tmp, re.data[it[i1][0]][1])
-        return re,
+            else:
+                tmp = re.data[it[i1][0]][0] + it[i1][1][0]
+                if tmp == 0:
+                    del re.data[it[i1][0]]
+                else:
+                    re.data[it[i1][0]] = (tmp, re.data[it[i1][0]][1])
+        return (re, self.convert(other))
 
     def __div__(self, other):
         it = other.data.items()
         re = self.copy()
         for i1 in xrange(0, len(it)):
             if not re.data.has_key(it[i1][0]):
-                re.data[it[i1][0]] = -it[i1][1]
-            tmp = re.data[it[i1][0]][0] - it[i1][1][0]
-            if tmp == 0:
-                del re.data[it[i1][0]]
-            else
-                re.data[it[i1][0]] = (tmp, re.data[it[i1][0]][1])
-        return re,
+                re.data[it[i1][0]] = (-it[i1][1][0], it[i1][1][1])
+            else:
+                tmp = re.data[it[i1][0]][0] - it[i1][1][0]
+                if tmp == 0:
+                    del re.data[it[i1][0]]
+                else:
+                    re.data[it[i1][0]] = (tmp, re.data[it[i1][0]][1])
+        return (re, self.convert(other))
 
 class ValueUnit(float):
-
-    @staticmethod
-    def convert(value, unit_before, unit_after):
-        if unit_before is unit_after:
-            return value
-        return value * unit_after.ratio() / unit_before.ratio()
-
-    def __init__(self, value, unit):
+    def __init__(self, value=0.0, unit=None):
         float.__init__(self, value)
-        self.unit = unit
+        if unit is None:
+            self.unit = Unit()
+        else:
+            self.unit = unit
 
     def __abs__(self):
         return ValueUnit(float.__abs__(self), self.unit)
         
     def __add__(self, other):
-        self.unit += other.unit 
-##
-        return ValueUnit(float.__add__(self, other), self.unit)
+        reunit = self.unit + other.unit
+        return ValueUnit(float.__add__(self, float.__mul__(other, reunit[1])), reunit[0])
         
+    def __sub__(self, other):
+        reunit = self.unit - other.unit
+        return ValueUnit(float.__sub__(self, float.__mul__(other, reunit[1])), reunit[0])
+    
     def __div__(self, other):
-        self.unit
-        return ValueUnit(float.__div__(self, other))
+        reunit = self.unit / other.unit
+        return ValueUnit(float.__div__(self, float.__mul__(other, reunit[1])), reunit[0])
+
+    def __mul__(self, other):
+        reunit = self.unit * other.unit
+        return ValueUnit(float.__mul__(self, float.__mul__(other, reunit[1])), reunit[0])
         
     def __divmod__(self, other):
-        if self.unit.data != self.other.data:
-            raise Exception('Different Type of Data')
+        if self.unit != other.unit:
+            raise UnmatchedUnits()
+        return ValueUnit(float.__divmod__(self, other), Unit())
 
-        return ValueUnit(float.__add__(self, other))
+    def convert(self, unit_after):
+        ra = unit_after.convert(self.unit)
+        return ValueUnit(float.__mul__(self, ra), unit_after.copy())
+
+    def normalize(self):
+        ra = self.unit.normalize()
+        self = ValueUnit(float.__mul__(self, ra), self.unit)
 
