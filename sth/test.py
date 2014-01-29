@@ -8,8 +8,7 @@ from traits import api as ta
 class Cs(ta.HasTraits):
     xsk = ta.Float
     xsk2 = sua.HasUnit
-    lent = sua.Length
-    xsk3 = 0.0
+    xsk3 = sua.HasUnit('m')
     def __init__(self):
         pass
 
