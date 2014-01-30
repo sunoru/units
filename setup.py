@@ -21,6 +21,6 @@ setup(
         d['__version__']),
     include_package_data = True,
     license = 'Apache license 2.0',
-    packages = ['sciNote'],
+    packages = ['sciNote', 'sciNote.units'],
     platforms = ["Windows", "Linux", "Max OS-X", "Unix", "Solaris"],
 )
