@@ -219,13 +219,8 @@ class Unit(BaseUnit):
                 re.data[e1] = (re.data[e1][0] * other, re.data[e1][1])
             return re
         if other.imag == 0:
-            tr = other.as_integer_ratio()
-            if tr[0] == 1:
-                for e1 in re.data.keys():
-                    re.data[e1] = (re.data[e1][0] * other, re.data[e1][1])
-            elif tr[1] == 1:
-                for e1 in re.data.keys():
-                    re.data[e1] = (re.data[e1][0] * other, re.data[e1][1])
+            for e1 in re.data.keys():
+                re.data[e1] = (re.data[e1][0] * other, re.data[e1][1])
             return re
         raise UnmatchedUnits()
 
