@@ -13,8 +13,6 @@ class ValueUnit(complex):
             obj.unit = Unit()
         else:
             obj.unit = unit
-        if isinstance(obj.unit, basestring):
-            obj.unit = genUnit(obj.unit)
         return obj
     
     def isreal(self):
@@ -144,14 +142,15 @@ class ValueUnit(complex):
 def genValue(*value):
     if len(value)>=2:
         t = genUnit(value[1])
-        return ValueUnit(value[0], t)
+        return ValueUnit(complex(value[0]) * t[1], t[0])
     value = value[0]
     if isinstance(value, complex) or isinstance(value, float) or isinstance(value, int):
         return ValueUnit(value)
     if isinstance(value, basestring):
         for i1 in xrange(0, len(value)):
             if value[i1].isalpha():
-                break
-        return ValueUnit(value[:i1], genUnit(value[i1:]))
+                t = genUnit(value[i1:])
+                return ValueUnit(complex(value[:i1]) * t[1], t[0])
+        return ValueUnit(value)
     raise ValueInitError()
 

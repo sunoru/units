@@ -18,20 +18,66 @@ class Unit(BaseUnit):
     '''
     @staticmethod
     def findUnit(ccflg, tmstr, punit, censu, annit):
-        ttflg = False
+        for e1 in DERIVED_DATA.keys():
+            if tmstr.endswith(e1):
+                if ccflg:
+                    t = UNIT_PREFIX.get(tmstr[:len(tmstr)-len(e1)], None)
+                    if t is None:
+                        return None
+                    knd = DERIVED_DATA[e1][0] * t
+                    for e2 in DERIVED_DATA[e1][1].keys():
+                        if annit[e2] != '':
+                            knd /= UNIT_DATA[e2][annit[e2]]
+                        else:
+                            annit[e2] = UNIT_DATA[e2]['default']
+                        punit[e2] += censu * DERIVED_DATA[e1][1][e2]
+                else:
+                    t = UNIT_PREFIX.get(tmstr[:len(tmstr)-len(e1)], None)
+                    if t is None:
+                        return None
+                    knd = 1 / DERIVED_DATA[e1][0] / t
+                    for e2 in DERIVED_DATA[e1][1].keys():
+                        if annit[e2] != '':
+                            knd *= UNIT_DATA[e2][annit[e2]]
+                        else:
+                            annit[e2] = UNIT_DATA[e2]['default']
+                        punit[e2] -= censu * DERIVED_DATA[e1][1][e2]
+                return knd
         for e1 in UNIT_DATA.values():
             for e2 in e1.keys():
                 if e2 == tmstr:
-                    ttflg = True
                     annit[e1['type']] = e2
                     if ccflg:
                         punit[e1['type']] += censu
                     else:
                         punit[e1['type']] -= censu
-                    break
-            if ttflg:
-                break
-        return ttflg
+                    return 1e0
+        for e1 in DERIVED_UNIT.values():
+            if tmstr.endswith(e1[0]):
+                if ccflg:
+                    t = UNIT_PREFIX.get(tmstr[:len(tmstr)-len(e1[0])], None)
+                    if t is None:
+                        return None
+                    knd = t
+                    for e2 in e1[1].keys():
+                        if annit[e2] != '':
+                            knd /= UNIT_DATA[e2][annit[e2]]
+                        else:
+                            annit[e2] = UNIT_DATA[e2]['default']
+                        punit[e2] += censu * e1[1][e2]
+                else:
+                    t = UNIT_PREFIX.get(tmstr[:len(tmstr)-len(e1[0])], None)
+                    if t is None:
+                        return None
+                    knd = 1 / t
+                    for e2 in e1[1].keys():
+                        if annit[e2] != '':
+                            knd *= UNIT_DATA[e2][annit[e2]]
+                        else:
+                            annit[e2] = UNIT_DATA[e2]['default']
+                        punit[e2] -= censu * e1[1][e2]
+                return knd
+        return None
 
     @staticmethod
     def analysis(name):
@@ -44,6 +90,7 @@ class Unit(BaseUnit):
         ccflg = True
         censu = 1
         miflg = False
+        xx = 1e0
         for i in xrange(0, len(mystr)):
             if mystr[i] == '^':
                 miflg = True
@@ -53,8 +100,10 @@ class Unit(BaseUnit):
                 if miflg:
                     censu = int(tmstr)
                     tmstr = mistr
-                if not Unit.findUnit(ccflg, tmstr, punit, censu, annit):
+                pt = Unit.findUnit(ccflg, tmstr, punit, censu, annit)
+                if pt is None:
                     raise IlligalUnit()
+                xx *= pt
                 tmstr = ''
                 ccflg = True
                 censu = 1
@@ -63,8 +112,10 @@ class Unit(BaseUnit):
                 if miflg:
                     censu = int(tmstr)
                     tmstr = mistr
-                if not Unit.findUnit(ccflg, tmstr, punit, censu, annit):
+                pt = Unit.findUnit(ccflg, tmstr, punit, censu, annit)
+                if pt is None:
                     raise IlligalUnit()
+                xx *= pt
                 tmstr = ''
                 ccflg = False
                 censu = 1
@@ -74,9 +125,11 @@ class Unit(BaseUnit):
         if miflg:
             censu = int(tmstr)
             tmstr = mistr
-        if not Unit.findUnit(ccflg, tmstr, punit, censu, annit):
+        pt = Unit.findUnit(ccflg, tmstr, punit, censu, annit)
+        if pt is None:
             raise IlligalUnit()
-        return punit, annit
+        xx *= pt
+        return punit, annit, xx
 
     def __init__(self, data=None):
         BaseUnit.__init__(self, data)
@@ -182,7 +235,7 @@ class Unit(BaseUnit):
 
 def genUnit(name):
     if name is None:
-        return Unit()
-    u1, u2 = Unit.analysis(name)
+        return None, 1e0
+    u1, u2, xx= Unit.analysis(name)
     re = {i1:(u1[i1], u2[i1]) for i1 in xrange(0, len(u2)) if u1[i1]!=0}
-    return Unit(re)
+    return Unit(re), xx

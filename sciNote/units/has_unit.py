@@ -16,9 +16,7 @@ class BaseHasUnit(ta.TraitType):
 
     def __init__(self, unit=None):
         ta.TraitType.__init__(self)
-        self.unit = genUnit(unit)
-        if self.unit is not None:
-            self.unit = self.unit.normalize()[0]
+        self.unit = genUnit(unit)[0]
 
     def create_editor(self):
         pass
@@ -38,20 +36,22 @@ class HasUnit(BaseHasUnit):
         object.__dict__[PRENAME + name] = value
 
     def validate(self, object, name, value):
-        if isinstance(value, ValueUnit) and value.isreal():
+        if isinstance(value, ValueUnit):
+            if not value.isreal() or self.unit is not None and self.unit != value.unit:
+                self.error(object, name, value)
             return value
 
         if isinstance(value, basestring):
             t = genValue(value)
-            if self.imag != 0 or self.unit is not None and self.unit != t:
+            if self.imag != 0 or self.unit is not None and self.unit != t.unit:
                 self.error(object, name, value)
             return t
 
         if (isinstance(value, list) or isinstance(value, tuple)) and value[0].imag == 0:
             t = genUnit(value[1])
-            if self.unit is not None and self.unit != t:
+            if self.unit is not None and self.unit != t[0]:
                 self.error(object, name, value)
-            return ValueUnit(value[0], t)
+            return ValueUnit(value[0] * t[1], t[0])
 
         if isinstance(value, float) or isinstance(value, int):
             rtmp = ValueUnit(value, self.unit)
@@ -65,19 +65,21 @@ class HasUnitComplex(HasUnit):
             return ValueUnit(value, self.unit)
 
         if isinstance(value, ValueUnit):
+            if self.unit is not None and self.unit != value.unit:
+                self.error(object, name, value)
             return value
 
         if isinstance(value, basestring):
             t = genValue(value)
-            if self.unit is not None and self.unit != t:
+            if self.unit is not None and self.unit != t.unit:
                 self.error(object, name, value)
             return t
 
         if (isinstance(value, list) or isinstance(value, tuple)):
             t = genUnit(value[1])
-            if self.unit is not None and self.unit != t:
+            if self.unit is not None and self.unit != t[0]:
                 self.error(object, name, value)
-            return ValueUnit(value[0], t)
+            return ValueUnit(value[0] * t[1], t[0])
 
         self.error(object, name, value)
 
