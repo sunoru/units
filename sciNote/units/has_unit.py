@@ -16,7 +16,7 @@ class BaseHasUnit(ta.TraitType):
 
     def __init__(self, unit=None):
         ta.TraitType.__init__(self)
-        self.unit = genUnit(unit)[0]
+        self.unit, self.rad = genUnit(unit)
 
     def create_editor(self):
         pass

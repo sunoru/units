@@ -75,7 +75,7 @@ class ValueUnit(complex):
         if isinstance(other, ValueUnit) and other.unit != Unit():
             raise UnmatchedUnits()
         if self.unit != Unit():
-            if isinstance(other, int) or (other.imag == 0 and other.real.is_integer()):
+            if other.imag == 0:
                 return ValueUnit(complex.__pow__(self, other), self.unit**(other.real))
             else:
                 raise UnmatchedUnits()
