@@ -3,7 +3,7 @@
 # by スノル
 
 from os.path import join
-from setuptools import setup
+from setuptools import setup, find_packages
 
 d = {}
 sciNote_init = join('sciNote', '__init__.py')
@@ -21,6 +21,9 @@ setup(
         d['__version__']),
     include_package_data = True,
     license = 'Apache license 2.0',
-    packages = ['sciNote', 'sciNote.units'],
-    platforms = ["Windows", "Linux", "Max OS-X", "Unix", "Solaris"],
+    packages = find_packages('src'),
+    package_dir = {'': 'src'},
+    zip_safe = False
+    platforms = "Independant",
 )
+
