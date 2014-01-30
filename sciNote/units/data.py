@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-# filename:  sciNote/units/data.py
+# -*- coding:utf-8 -*-
+# filename: sciNote/units/data.py
 # by スノル
-
 #
 from .locals import *
 
