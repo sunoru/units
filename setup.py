@@ -23,7 +23,7 @@ setup(
     license = 'Apache license 2.0',
     packages = find_packages('src'),
     package_dir = {'': 'src'},
-    zip_safe = False
+    zip_safe = False,
     platforms = "Independant",
 )
 
