@@ -3,3 +3,5 @@ cl.py
 build/
 dist/
 src/sciNote.egg-info/
+*.tar.gz
+publish.sh

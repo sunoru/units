@@ -33,7 +33,7 @@ $ python setup.py install
 
 ## Getting the code
 
-The code is hosted at [Github](https://github.com/sunoru/sciNote)
+The code is hosted at [Github](https://github.com/sunoru/sciNote-0.0.2)
 
 ```
 $ git clone git://github.com/sunoru/sciNote.git
