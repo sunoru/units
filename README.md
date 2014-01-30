@@ -23,7 +23,7 @@ You can alternatively use `apt-get` to install them:
 ```
 $ apt-get install python-traits
 ```
-Download the latest `sciNote` library from: https://www.sunoru.com/code/sciNote/
+Download the latest `sciNote` library from: https://www.sunoru.com/code/sciNote-0.0.2/
 
 Extract the source distribution and run:
 ```
@@ -33,7 +33,7 @@ $ python setup.py install
 
 ## Getting the code
 
-The code is hosted at [Github](https://github.com/sunoru/sciNote-0.0.2)
+The code is hosted at [Github](https://github.com/sunoru/sciNote)
 
 ```
 $ git clone git://github.com/sunoru/sciNote.git
