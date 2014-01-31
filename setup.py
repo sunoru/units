@@ -6,7 +6,7 @@ from os.path import join
 from setuptools import setup, find_packages
 
 d = {}
-sciNote_init = join('src', 'sciNote', '__init__.py')
+sciNote_init = join('src', 'units', '__init__.py')
 exec(compile(open(sciNote_init).read(), sciNote_init, 'exec'), d)
 
 setup(

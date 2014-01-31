@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 # filename: sth/test.py
 # by スノル
-from sciNote.units import api as sua
-from sciNote.units.api import V
+from units import api as sua
+from units.api import V
 
 from traits import api as ta
 
