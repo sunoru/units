@@ -2,7 +2,7 @@
 cl.py
 build/
 dist/
-src/sciNote.egg-info/
+src/*.egg-info
 units-0.2.0/
 *.tar.gz
 publish.sh
