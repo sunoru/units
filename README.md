@@ -1,15 +1,13 @@
-# sciNote
+# units
 
-**Use Python for scientific calculation.**
-https://github.com/sunoru/sciNote
+**Use value type with SI units in Python.**
+https://github.com/sunoru/units
 
 Author: スノル <s@sunoru.com>
 
 ## Introduction
 
-This library privides some useful modules for scientific calculation. It works with Python versions from 2.5 to 2.7.
-
-* units: use value type with SI units.
+With this library, you can use value type with SI units.
 
 ## Building
 
@@ -23,7 +21,7 @@ You can alternatively use `apt-get` to install them:
 ```
 $ apt-get install python-traits
 ```
-Download the latest `sciNote` library from: https://www.sunoru.com/code/sciNote-0.0.2/
+Download the latest `units` library from: https://www.sunoru.com/code/units-0.2.0/
 
 Extract the source distribution and run:
 ```
@@ -33,22 +31,20 @@ $ python setup.py install
 
 ## Getting the code
 
-The code is hosted at [Github](https://github.com/sunoru/sciNote)
+The code is hosted at [Github](https://github.com/sunoru/units)
 
 ```
-$ git clone git://github.com/sunoru/sciNote.git
-$ cd sciNote
+$ git clone git://github.com/sunoru/units.git
+$ cd units
 ```
 
 ## Using
 
-At present the library only provides a module for `units`.
-
 *API:*
 
-Use sciNote.units.api.V to generate values with units.
+Use units.api.V to generate values with units.
 ```
->>> from sciNote.units.api import V
+>>> from units.api import V
 >>> a = V('5m/s^2')
 >>> t = V('2.5s')
 >>> s = 0.5 * a * t ** 2
@@ -61,7 +57,7 @@ Use sciNote.units.api.V to generate values with units.
 Use the HasUnit or HasUnitComplex to act as a trait that has units. (See the [traits](https://github.com/enthought/traits).)
 
 ```
->>> from sciNote.units.api import HasUnit
+>>> from units.api import HasUnit
 >>> from traits.api import HasTraits
 >>> from math import pi
 >>> class Cone(HasTraits):

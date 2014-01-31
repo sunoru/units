@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-# filename: sciNote/units/api.py
+# filename: units/api.py
 # by スノル
 
 from locals import *

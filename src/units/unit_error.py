@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-# filename: sciNote/units/unit_error.py
+# filename: units/unit_error.py
 # by スノル
 
 class BaseError(Exception):

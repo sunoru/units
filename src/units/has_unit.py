@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-# filename: sciNote/units/has_unit.py
+# filename: units/has_unit.py
 # by スノル
 
 import traits.api as ta

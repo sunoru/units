@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-# filename: sciNote/units/value_type.py
+# filename: units/value_type.py
 # by スノル
 
 from sys import stdout

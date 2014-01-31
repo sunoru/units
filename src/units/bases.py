@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-# filename: sciNote/units/bases.py
+# filename: units/bases.py
 # by スノル
 
 from .data import *

@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-# filename: sciNote/units/locals.py
+# filename: units/locals.py
 # by スノル
 
 B_LENGTH = 0
