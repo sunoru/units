@@ -7,7 +7,7 @@ from .locals import *
 _pc = 30835997962819660.8
 LENGTH_DATA = {
     u'default': u'm', u'type': B_LENGTH,
-    u'm': 1e0, u'km': 1e3, u'cm': 1e-1, u'mm': 1e-3,
+    u'm': 1e0, u'km': 1e3, u'cm': 1e-2, u'mm': 1e-3,
     u'dam': 1e1, u'hm': 1e2, u'Mm': 1e6, u'Gm': 1e9,
     u'µm': 1e-6, u'nm': 1e-9, u'pm': 1e-12, u'fm': 1e-15,
     u'Tm': 1e12, u'Pm': 1e15, u'Em': 1e18, u'Zm': 1e21,
