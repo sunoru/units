@@ -77,7 +77,7 @@ Use the HasUnit or HasUnitComplex to act as a trait that has units. (See the [tr
 
 ## License
 
-Copyright [sunoru]
+Copyright [2014]スノル
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
